@@ -4,7 +4,7 @@
     wget -P $2 $1
     echo
     echo "Descargar contaminantes"
-if ["$3"=="yes"]
+if [ "$3" == "yes" ]
 then
-    gunzip -fk $($2) / $(basename $1)
+    gunzip -k $2/$(basename $1)
 fi

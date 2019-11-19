@@ -4,11 +4,7 @@
     wget -P $2 $1
     echo
     echo "Descargar contaminantes"
-if ($3=="yes")
+if ["$3"=="yes"]
 then
-    wget -O res/contaminants.fasta.gz https://bioinformatics.cnio.es/data/courses/decont/contaminants.fasta.gz
-    gunzip -k res/contaminants.fasta.gz
-    echo
-else
-
+    gunzip -fk $($2) / $(basename $1)
 fi

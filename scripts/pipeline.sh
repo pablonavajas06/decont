@@ -35,10 +35,23 @@ done
 # (this should be a single log file, and information should be *appended* to it on each run)
 # - cutadapt: Reads with adapters and total basepairs
 # - star: Percentages of uniquely mapped reads, reads mapped to multiple loci, and to too many loci
+for sampleid in $(ls data/*.fastq.gz | cut -d "-" -f1 | sed 's:data/::' | sort | uniq)
+do
+    echo "Sample: " $sampleid >> log/pipeline.log
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >> log/pipeline.log
 
+    echo "Cutadpat: " >> log/pipeline.log
+    echo $(cat log/cutadapt/$sampleid.log | grep -i "Reads with adapters") >> log/pipeline.log
+    echo $(cat log/cutadapt/$sampleid.log | grep -i "total basepairs") >> log/pipeline.log
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >> log/pipeline.log
+    echo "STAR: " >> log/pipeline.log
+    echo $(cat out/star/$sampleid/Log.final.out | grep -e "Percentage of uniquely mapped reads") >> log/pipeline.log
+    echo $(cat out/star/$sampleid/Log.final.out | grep -e "Percentage of reads mapped to multiple loci") >> log/pipeline.log
+    echo $(cat out/star/$sampleid/Log.final.out | grep -e "Percentage to too many loci") >> log/pipeline.log
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >> log/pipeline.log
+    echo " " >> log/pipeline.log
+done
 
-
-
-    echo "Guardar Ambiente"
-    mkdir -p envs
-    conda env export > envs/decont.yaml
+echo "Guardar Ambiente"
+mkdir -p envs
+conda env export > envs/decont.yaml

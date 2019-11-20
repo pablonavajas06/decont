@@ -41,16 +41,16 @@ do
     echo "Sample: " $sampleid >> log/pipeline.log
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >> log/pipeline.log
 
-    echo
-    echo
-    echo
-    echo
-    echo
-    echo
-    echo
-    echo
-    echo
-    echo
+    echo "Cutadpat: " >> log/pipeline.log
+    echo $(cat log/cutadapt/$sampleid.log | grep -i "Reads with adapters") >> log/pipeline.log
+    echo $(cat log/cutadapt/$sampleid.log | grep -i "total basepairs") >> log/pipeline.log
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >> log/pipeline.log
+    echo "STAR: " >> log/pipeline.log
+    echo $(cat out/star/$sampleid/Log.final.out | grep -e "Percentage of uniquely mapped reads") >> log/pipeline.log
+    echo $(cat out/star/$sampleid/Log.final.out | grep -e "Percentage of reads mapped to multiple loci") >> log/pipeline.log
+    echo $(cat out/star/$sampleid/Log.final.out | grep -e "Percentage to too many loci") >> log/pipeline.log
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >> log/pipeline.log
+    echo " " >> log/pipeline.log
 done
 
 echo "Guardar Ambiente"

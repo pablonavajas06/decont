@@ -19,27 +19,18 @@ done
 # TODO: run cutadapt for all merged files
     mkdir -p out/trimmed
     mkdir -p log/cutadapt
-for sid in $(ls out/merged/*.fastq.gz | cut -d "." -f1 | sed 's:out/merged/::')
+for sampleid in $(ls out/merged/*.fastq.gz | cut -d "." -f1 | sed 's:out/merged/::')
 do
-    cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed -o out/trimmed/${sid}.trimmed.fastq.gz out/merged/${sid}.fastq.gz > log/cutadapt/${sid}.log
-    echo "Todo va bien"
+    cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed -o out/trimmed/${sampleid}.trimmed.fastq.gz out/merged/${sampleid}.fastq.gz > log/cutadapt/${sampleid}.log
 done
 #TODO: run STAR for all trimmed files
 for fname in out/trimmed/*.fastq.gz
 do
     # you will need to obtain the sample ID from the filename
-    sid=ls out/merged/*.fastq.gz | cut -d "." -f1 | sed 's:out/merged/::'
+    sid=$(echo $fname | sed 's:out/trimmed/::' | cut -d "." -f1)
     mkdir -p out/star/$sid
-    STAR --runThreadN 4 --genomeDir res/contaminants_idx/ --outReadsUnmapped Fastx --readFilesIn ${fname} --readFilesCommand zcat --outFileNamePrefix out/star/${sid}/
+    STAR --runThreadN 4 --genomeDir res/contaminants_idx --outReadsUnmapped Fastx --readFilesIn ${fname} --readFilesCommand zcat --outFileNamePrefix out/star/${sid}/
 done
-
-for sampleid in log/cutadapt/
-do
-    cat | grep "Reads with adapters and total basepairs" >> pipeline.log
-    
-    
-    
-    
 # TODO: create a log file containing information from cutadapt and star logs
 # (this should be a single log file, and information should be *appended* to it on each run)
 # - cutadapt: Reads with adapters and total basepairs
@@ -50,4 +41,4 @@ do
 
     echo "Guardar Ambiente"
     mkdir -p envs
-    conda env export > envs/trabajo_final.yaml
+    conda env export > envs/decont.yaml

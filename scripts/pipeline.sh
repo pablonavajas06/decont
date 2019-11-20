@@ -32,6 +32,14 @@ do
     mkdir -p out/star/$sid
     STAR --runThreadN 4 --genomeDir res/contaminants_idx/ --outReadsUnmapped Fastx --readFilesIn ${fname} --readFilesCommand zcat --outFileNamePrefix out/star/${sid}/
 done
+
+for sampleid in log/cutadapt/
+do
+    cat | grep "Reads with adapters and total basepairs" >> pipeline.log
+    
+    
+    
+    
 # TODO: create a log file containing information from cutadapt and star logs
 # (this should be a single log file, and information should be *appended* to it on each run)
 # - cutadapt: Reads with adapters and total basepairs

@@ -21,9 +21,9 @@ echo "Running cutadapat"
     mkdir -p out/trimmed
     mkdir -p log/cutadapt
 
-for sampleid in $(ls out/merged/*.fastq.gz | cut -d "." -f1 | sed 's:out/merged/::' | sort | uniq)
+for sampleid in $(ls out/merged/*.fastq.gz | cut -d "." -f1 | sed 's:out/merged/::')
 do
-    if [ -f $sampleid ]
+    if [ -f out/merged/$sampleid.fastq.gz ]
     then
         cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed -o out/trimmed/${sampleid}.trimmed.fastq.gz out/merged/${sampleid}.fastq.gz > log/cutadapt/${sampleid}.log
     else

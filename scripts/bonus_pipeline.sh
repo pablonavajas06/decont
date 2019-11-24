@@ -16,18 +16,18 @@ do
     bash scripts/merge_fastqs.sh data out/merged $sid
 done
 
-echo "Running cutadpat"
+echo "Running cutadapat"
 # TODO: run cutadapt for all merged files
     mkdir -p out/trimmed
     mkdir -p log/cutadapt
 
 for sampleid in $(ls out/merged/*.fastq.gz | cut -d "." -f1 | sed 's:out/merged/::' | sort | uniq)
 do
-    if [ -f out/merged/${sampleid}-12.5dpp_sRNA_merged.fastq.gz ]
+    if [ -f $sampleid ]
     then
         cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed -o out/trimmed/${sampleid}.trimmed.fastq.gz out/merged/${sampleid}.fastq.gz > log/cutadapt/${sampleid}.log
     else
-        echo "ERROR: No se detectan los ficheros necesarios: $sampleid-12.5dpp_sRNA_merged.fastq.gz"
+        echo "ERROR: No se detectan los ficheros necesarios: $sampleid"
         exit 1
     fi
 done
